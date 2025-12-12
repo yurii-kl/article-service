@@ -1,4 +1,4 @@
-version: "2"
+version: 2
 
 run:
   tests: false
@@ -49,26 +49,15 @@ issues:
     - G115
 
 # Uncomment if you need exclusions
-# linters:
-#   exclusions:
-#     generated: lax
-#     presets:
-#       - comments
-#       - common-false-positives
-#       - legacy
-#       - std-error-handling
-#     rules:
-#       - path: (.+)\.go$
-#         text: G115
-#     paths:
-#       - third_party$
-#       - builtin$
-#       - examples$
+# linters-settings:
+#   exhaustive:
+#     default-signifies-exhaustive: true
 
-# formatters:
-#   exclusions:
-#     generated: lax
-#     paths:
-#       - third_party$
-#       - builtin$
-#       - examples$
+# issues:
+#   exclude-rules:
+#     - path: (.+)_test\.go
+#       linters:
+#         - errcheck
+#     - path: third_party/
+#       linters:
+#         - all
