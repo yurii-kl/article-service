@@ -80,10 +80,8 @@ func (s *Server) Run() error {
 	err := server.ListenAndServe()
 	if err != nil && !errors.Is(err, http.ErrServerClosed) {
 		s.log.WithField("op", "httpapp.Run").Error("ListenAndServe: ", err)
-		panic(err)
 		return err
 	}
-
 	return nil
 }
 
