@@ -1,12 +1,20 @@
 package main
 
 import (
+	_ "github.com/Article/article-service/docs"
 	"github.com/Article/article-service/internal/app"
 	"github.com/Article/article-service/pkg/config"
 	"os"
 	"os/signal"
 	"syscall"
 )
+
+// @title           Article Service API
+// @version         1.0
+// @description     Article management service API
+// @termsOfService  http://swagger.io/terms/
+// @BasePath        /api/v1
+// @schemes         http
 
 func main() {
 	cfg := config.Load(config.NewLogger())

@@ -1,0 +1,116 @@
+basePath: /api/v1
+definitions:
+  dto.CreateArticleRequest:
+    properties:
+      title:
+        type: string
+    required:
+    - title
+    type: object
+  dto.CreateArticleResponse:
+    properties:
+      created_at:
+        type: integer
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.GetArticleResponse:
+    properties:
+      created_at:
+        type: integer
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+  response.CustomError:
+    properties:
+      code:
+        type: integer
+      dev_message:
+        type: string
+      message:
+        type: string
+      validation_errors:
+        items:
+          $ref: '#/definitions/response.ValidationError'
+        type: array
+    type: object
+  response.ValidationError:
+    properties:
+      error:
+        type: string
+      field:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Article management service API
+  termsOfService: http://swagger.io/terms/
+  title: Article Service API
+  version: "1.0"
+paths:
+  /article:
+    post:
+      consumes:
+      - application/json
+      description: Create a new article with the given title
+      parameters:
+      - description: Create Article Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateArticleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CreateArticleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.CustomError'
+      summary: Create a new article
+      tags:
+      - articles
+  /article/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve an article using its unique ID
+      parameters:
+      - description: Article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetArticleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.CustomError'
+      summary: Get an article by ID
+      tags:
+      - articles
+schemes:
+- http
+swagger: "2.0"

@@ -2,62 +2,22 @@ version: 2
 
 run:
   tests: false
+  timeout: 5m
 
 linters:
   enable:
-    # Minimum essential linters
     - errcheck
     - govet
     - staticcheck
-
-    # Additional useful linters (uncomment if needed)
-    # - gosimple
-    # - ineffassign
-    # - unused
-    # - asasalint
-    # - asciicheck
-    # - bidichk
-    # - bodyclose
-    # - contextcheck
-    # - durationcheck
-    # - errchkjson
-    # - errorlint
-    # - exhaustive
-    # - gocheckcompilerdirectives
-    # - gochecksumtype
-    # - gosec
-    # - gosmopolitan
-    # - loggercheck
-    # - makezero
-    # - musttag
-    # - nilerr
-    # - nilnesserr
-    # - noctx
-    # - protogetter
-    # - reassign
-    # - recvcheck
-    # - rowserrcheck
-    # - spancheck
-    # - sqlclosecheck
-    # - testifylint
-    # - unparam
-    # - zerologlint
+    - ineffassign
+    - unused
 
 issues:
-  new: true
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0
   exclude:
     - G115
 
-# Uncomment if you need exclusions
-# linters-settings:
-#   exhaustive:
-#     default-signifies-exhaustive: true
-
-# issues:
-#   exclude-rules:
-#     - path: (.+)_test\.go
-#       linters:
-#         - errcheck
-#     - path: third_party/
-#       linters:
-#         - all
+output:
+  format: colored-line-number

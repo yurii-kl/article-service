@@ -1,13 +1,15 @@
-name: Production Pipeline
+name: Lint
 
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+  workflow_call:
 
 jobs:
-  build:
-    name: Build
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,15 +27,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       
-      - name: Download dependencies
-        run: go mod download
-      
-      - name: Build
-        run: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o article-service ./cmd/api
-      
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v4
         with:
-          name: article-service
-          path: article-service
-          retention-days: 30
+          version: latest
+          args: --timeout=5m
