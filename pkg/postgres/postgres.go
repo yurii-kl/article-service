@@ -23,10 +23,6 @@ type Config struct {
 	Log *logrus.Logger
 }
 
-type GormDb struct {
-	db *gorm.DB
-}
-
 func New(config Config) *gorm.DB {
 	ctx, cancel := context.WithTimeout(context.Background(), Timeout*time.Second)
 	defer cancel()

@@ -73,8 +73,9 @@ func (s *Server) Run() error {
 	s.log.WithField("port", port).Info("Starting server")
 
 	server = &http.Server{
-		Addr:    port,
-		Handler: s.engine,
+		Addr:              port,
+		Handler:           s.engine,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 	err := server.ListenAndServe()
 	if err != nil && !errors.Is(err, http.ErrServerClosed) {

@@ -1,28 +1,74 @@
-# https://golangci-lint.run/usage/configuration/#run-configuration
+version: "2"
+
 run:
   tests: false
 
-# https://golangci-lint.run/usage/configuration/#issues-configuration
+linters:
+  enable:
+    # Minimum essential linters
+    - errcheck
+    - govet
+    - staticcheck
+
+    # Additional useful linters (uncomment if needed)
+    # - gosimple
+    # - ineffassign
+    # - unused
+    # - asasalint
+    # - asciicheck
+    # - bidichk
+    # - bodyclose
+    # - contextcheck
+    # - durationcheck
+    # - errchkjson
+    # - errorlint
+    # - exhaustive
+    # - gocheckcompilerdirectives
+    # - gochecksumtype
+    # - gosec
+    # - gosmopolitan
+    # - loggercheck
+    # - makezero
+    # - musttag
+    # - nilerr
+    # - nilnesserr
+    # - noctx
+    # - protogetter
+    # - reassign
+    # - recvcheck
+    # - rowserrcheck
+    # - spancheck
+    # - sqlclosecheck
+    # - testifylint
+    # - unparam
+    # - zerologlint
+
 issues:
   new: true
   exclude:
     - G115
 
-# https://golangci-lint.run/usage/configuration/#linters-configuration
-linters:
-  presets:
-    - bugs
-    - unused
+# Uncomment if you need exclusions
+# linters:
+#   exclusions:
+#     generated: lax
+#     presets:
+#       - comments
+#       - common-false-positives
+#       - legacy
+#       - std-error-handling
+#     rules:
+#       - path: (.+)\.go$
+#         text: G115
+#     paths:
+#       - third_party$
+#       - builtin$
+#       - examples$
 
-    # other presents to consider later
-    # - comment
-    # - complexity
-    # - error
-    # - format
-    # - import
-    # - metalinter
-    # - module
-    # - performance
-    # - sql
-    # - style
-    # - test
+# formatters:
+#   exclusions:
+#     generated: lax
+#     paths:
+#       - third_party$
+#       - builtin$
+#       - examples$
