@@ -18,6 +18,3 @@ issues:
   max-same-issues: 0
   exclude:
     - G115
-
-output:
-  format: colored-line-number
