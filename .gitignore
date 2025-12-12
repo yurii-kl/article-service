@@ -1,1 +1,14 @@
 .idea
+
+.env
+
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+article-service
+
+.dockerignore
