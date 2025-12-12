@@ -1,0 +1,28 @@
+# https://golangci-lint.run/usage/configuration/#run-configuration
+run:
+  tests: false
+
+# https://golangci-lint.run/usage/configuration/#issues-configuration
+issues:
+  new: true
+  exclude:
+    - G115
+
+# https://golangci-lint.run/usage/configuration/#linters-configuration
+linters:
+  presets:
+    - bugs
+    - unused
+
+    # other presents to consider later
+    # - comment
+    # - complexity
+    # - error
+    # - format
+    # - import
+    # - metalinter
+    # - module
+    # - performance
+    # - sql
+    # - style
+    # - test
