@@ -10,11 +10,15 @@ import (
 	"github.com/Article/article-service/internal/app/http/container"
 	articleHttp "github.com/Article/article-service/internal/article/transport/http"
 	"github.com/Article/article-service/pkg/config"
+	"github.com/Article/article-service/pkg/metrics"
 	"github.com/Article/article-service/pkg/redis"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
@@ -49,7 +53,6 @@ func healthCheck(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"status": "ok",
 	})
-	return
 }
 
 var server *http.Server
@@ -59,14 +62,18 @@ func (s *Server) Run() error {
 
 	s.engine.Use(cors.Default())
 	s.engine.Use(gin.Recovery())
+	s.engine.Use(metrics.PrometheusMiddleware())
 
 	if s.cfg.Environment == config.EnvProd {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	s.engine.GET("/health", healthCheck)
+	api := s.engine.Group("/api")
+	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	api.GET("/private/health", healthCheck)
+	api.GET("/private/metrics", gin.WrapH(promhttp.Handler()))
+	v1 := api.Group("/v1")
 
-	v1 := s.engine.Group("/v1")
 	s.Routes(v1)
 
 	port := fmt.Sprintf(":%s", s.cfg.HttpPort)
@@ -86,7 +93,7 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) Routes(v1 *gin.RouterGroup) {
-	articleContainer := container.NewArticleContainer(s.db, s.log, s.validator)
+	articleContainer := container.NewArticleContainer(s.db, s.rdb, s.log, s.validator)
 	articleHttp.RegisterRoutes(v1, articleContainer)
 }
 
@@ -104,10 +111,8 @@ func (s *Server) Stop() {
 		return
 	}
 
-	select {
-	case <-ctx.Done():
-		s.log.Info("timeout of 5 seconds.")
-	}
+	<-ctx.Done()
+	s.log.Info("timeout of 5 seconds.")
 
 	s.log.Info("http server stopped")
 }
