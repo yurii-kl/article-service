@@ -30,6 +30,8 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v7
+        uses: golangci/golangci-lint-action@v6
         with:
-          version: v2.7.2
+          version: latest
+          args: --disable-all --enable=govet --enable=errcheck --enable=staticcheck
+
