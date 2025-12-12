@@ -100,7 +100,7 @@ func (s *Server) Stop() {
 
 	err := server.Shutdown(ctx)
 	if err != nil {
-		s.log.Error("")
+		s.log.WithError(err).Error("failed to shutdown server gracefully")
 		return
 	}
 
