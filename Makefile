@@ -63,3 +63,11 @@ db-rollback:
 	@migrate -path pkg/postgres/migrations/ \
 		-database "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=$(POSTGRES_SSL)" \
 		-verbose down 1
+
+.PHONY: swag-init
+swag-init:
+	@swag init -g cmd/api/main.go -o ./docs
+
+.PHONY: swag-clean
+swag-clean:
+	@rm -rf ./docs

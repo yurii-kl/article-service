@@ -39,6 +39,10 @@ func BadRequestBody(c *gin.Context, err error) {
 	ErrorResponse(c, err, http.StatusBadRequest, "bad request body")
 }
 
+func NotFound(c *gin.Context, err error) {
+	ErrorResponse(c, err, http.StatusNotFound, "resource not found")
+}
+
 func ErrorResponse(c *gin.Context, err error, code int, msg string) {
 	if err == nil {
 		err = errors.New("placeholder error")

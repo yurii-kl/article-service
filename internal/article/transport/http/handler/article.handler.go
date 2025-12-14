@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
+	articledomainerrors "github.com/Article/article-service/internal/article/domain/errors"
 	"github.com/Article/article-service/internal/article/transport/http/dto"
 	"github.com/Article/article-service/internal/article/usecase"
 	"github.com/Article/article-service/pkg/metrics"
@@ -99,6 +101,10 @@ func (ah *ArticleHandler) GetArticle(c *gin.Context) {
 	article, err := ah.getArticleUsecase.Execute(articleID)
 	if err != nil {
 		ah.logger.WithError(err).Error("get article failed")
+		if errors.Is(err, articledomainerrors.ErrArticleNotFound) {
+			response.NotFound(c, err)
+			return
+		}
 		response.InternalError(c, err)
 		return
 	}

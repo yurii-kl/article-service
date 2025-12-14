@@ -19,7 +19,8 @@ func TestGetArticleUsecase_Execute_Success(t *testing.T) {
 	articleID := uuid.New()
 	title := "Test Article Title"
 	createdAt := time.Now().UTC()
-	expectedArticle := entity.NewArticleWithID(articleID, title, createdAt)
+	updatedAt := time.Now().UTC()
+	expectedArticle := entity.NewArticleWithID(articleID, title, createdAt, updatedAt)
 
 	mockReader.On("Get", articleID).Return(expectedArticle, nil)
 

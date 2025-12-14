@@ -57,7 +57,6 @@ func TestArticleContainer_Integration_CreateAndGetArticle(t *testing.T) {
 
 	retrievedArticle, err := getUsecase.Execute(createdArticle.ID())
 
-	// Assert - Get
 	assert.NoError(t, err)
 	assert.NotNil(t, retrievedArticle)
 	assert.Equal(t, createdArticle.ID(), retrievedArticle.ID())

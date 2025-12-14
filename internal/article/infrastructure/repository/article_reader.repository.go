@@ -3,10 +3,12 @@ package repository
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
 	"github.com/Article/article-service/internal/article/domain/entity"
+	articledomainerrors "github.com/Article/article-service/internal/article/domain/errors"
 	"github.com/Article/article-service/internal/article/infrastructure/repository/mapper"
 	"github.com/Article/article-service/pkg/postgres/models"
 	"github.com/Article/article-service/pkg/redis"
@@ -44,6 +46,9 @@ func (r *ArticleReaderRepository) Get(articleId uuid.UUID) (*entity.Article, err
 
 	articleModel := &models.Article{}
 	if err := r.db.First(articleModel, "id = ?", articleId.String()).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, articledomainerrors.ErrArticleNotFound
+		}
 		return nil, err
 	}
 

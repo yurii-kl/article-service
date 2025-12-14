@@ -4,13 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Article/article-service/pkg/middleware"
 	"net/http"
 	"time"
 
 	"github.com/Article/article-service/internal/app/http/container"
 	articleHttp "github.com/Article/article-service/internal/article/transport/http"
 	"github.com/Article/article-service/pkg/config"
-	"github.com/Article/article-service/pkg/metrics"
 	"github.com/Article/article-service/pkg/redis"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -62,7 +62,9 @@ func (s *Server) Run() error {
 
 	s.engine.Use(cors.Default())
 	s.engine.Use(gin.Recovery())
-	s.engine.Use(metrics.PrometheusMiddleware())
+	s.engine.Use(middleware.RequestLoggerMiddleware(s.log))
+	s.engine.Use(middleware.TimeoutMiddleware(middleware.DefaultRequestTimeout))
+	s.engine.Use(middleware.PrometheusMiddleware())
 
 	if s.cfg.Environment == config.EnvProd {
 		gin.SetMode(gin.ReleaseMode)
