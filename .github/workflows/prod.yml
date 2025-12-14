@@ -1,11 +1,6 @@
 name: Production Pipeline
 
 on:
-  push:
-    branches: [ main ]
-    paths-ignore:
-      - '**.md'
-      - '.gitignore'
   workflow_dispatch:
 
 jobs:
